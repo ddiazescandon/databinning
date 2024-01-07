@@ -1,1 +1,2 @@
-# binning-review
+# Binning-review
+## Binning
