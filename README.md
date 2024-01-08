@@ -1,6 +1,6 @@
 # Binning-review
 ## Binning
-### MetaBAT 2
+### [MetaBAT 2](https://bitbucket.org/berkeleylab/metabat/src/master/) (version 2.15)
 ```
 ############################## Co-assembly binning ##############################
 mkdir marine_result
@@ -25,7 +25,7 @@ jgi_summarize_bam_contig_depths --outputDepth depth_${file}_marine.txt ${file}/s
 mkdir bins_dir
 metabat2 -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -a depth_${file}_marine.txt -o bins_dir/bin
 ```
-### MaxBin 2
+### [MaxBin 2](https://sourceforge.net/projects/maxbin/) (version 2.27)
 ```
 ############################## Co-assembly binning ##############################
 mkdir marine_result
@@ -43,7 +43,7 @@ mkdir ${file}_multi_result
 cd ${file}_multi_result
 run_MaxBin.pl -contig ${file}/single_assembly_out/final.contigs_1000.fa -abund_list ${file}_depth_list.txt -out ${file}_single_result/myout -thread 16
 ```
-### CONCOCT
+### [CONCOCT](https://github.com/BinPro/CONCOCT) (version 1.1.0)
 ```
 ############################## Co-assembly binning ##############################
 mkdir marine_result
@@ -77,7 +77,7 @@ merge_cutup_clustering.py concoct_output/clustering_gt1000.csv > concoct_output/
 mkdir concoct_output/fasta_bins
 extract_fasta_bins.py ${file}/single_assembly_out/final.contigs_1000.fa concoct_output/clustering_merged.csv --output_path concoct_output/fasta_bins
 ```
-### VAMB
+### [VAMB](https://github.com/RasmussenLab/vamb) (version 3.0.9)
 ```
 ############################## Co-assembly binning ##############################
 out_file=marine_result
@@ -99,7 +99,7 @@ fasta_file=${file}/single_assembly_out/final.contigs_1000.fa
 depth_file=metabat2.15/${file}_multi_result/depth_${file}_marine.txt
 vamb --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000 
 ```
-### CLMB
+### [CLMB](https://github.com/zpf0117b/CLMB) (version 1.0.0)
 ```
 ############################## Co-assembly binning ##############################
 out_file=marine_result
@@ -121,7 +121,7 @@ fasta_file=${file}/single_assembly_out/final.contigs_1000.fa
 depth_file=metabat2.15/${file}_multi_result/depth_${file}_marine.txt
 vamb --contrastive --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000 
 ```
-### MetaDecoder
+### [MetaDecoder](https://github.com/liu-congcong/MetaDecoder) (version 1.0.16)
 ```
 ############################## Co-assembly binning ##############################
 mkdir marine_result
@@ -146,7 +146,7 @@ metadecoder coverage --threads 16 -s ${file}/single_assembly_out/multi_map/*.sam
 metadecoder seed --threads 16 -f ${file}/single_assembly_out/final.contigs_1000.fa -o METADECODER_gsa.SEED
 metadecoder cluster -f ${file}/single_assembly_out/final.contigs_1000.fa -c METADECODER_gsa.COVERAGE -s METADECODER_gsa.SEED -o METADECODER_${file}_marine
 ```
-### Binny
+### [Binny](https://github.com/a-h-b/binny/) (version 2.2.15)
 ```
 ############################## Co-assembly binning ##############################
 run_name_list=marine_result
@@ -165,7 +165,7 @@ run_name_list=${file}_multi_result
 yaml_list=config_${file}_multi.yaml
 binny -l -n ${run_name_list[SLURM_ARRAY_TASK_ID]} -r -t 16 ${yaml_list}
 ```
-### MetaBinner
+### [MetaBinner](https://github.com/ziyewang/MetaBinner) (version 1.4.4)
 ```
 ############################## Co-assembly binning ##############################
 mkdir path/marine_result
@@ -202,7 +202,7 @@ coverage_profiles=path/depth_files/${file}_depth_multi.txt
 kmer_profile=path/${file}_multi_result/${file}_marine_kmer.tsv
 ../run_metabinner.sh -t 16 -a ${contig_file} -o ${output_dir} -d ${coverage_profiles} -k ${kmer_profile} -p ${metabinner_path}
 ```
-### SemiBin 2
+### [SemiBin 2](https://github.com/BigDataBiology/SemiBin) (version 1.5.1)
 ```
 ############################## Co-assembly binning ##############################
 mkdir marine_result
@@ -221,7 +221,7 @@ mkdir ${file}_multi_result
 cd ${file}_multi_result
 SemiBin2 single_easy_bin -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -b ${file}/single_assembly_out/multi_map/*.sorted.bam -o marine_${file}/output --compression none
 ```
-### COMEBin
+### [COMEBin](https://github.com/ziyewang/COMEBin) (version 1.0.3)
 ```
 ############################## Co-assembly binning ##############################
 run_comebin.sh -t 16 -a marine_short_co_assembly/final.contigs_1000.fa -o path/Comebin_result -p path/Comebin_result/bam_files
