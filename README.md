@@ -6,6 +6,7 @@
 ## Mapping
 * [Bowtie2](https://github.com/BenLangmead/bowtie2) (version 2.5.1) for short reads.
 * [minimap2](https://github.com/lh3/minimap2) (version 2.24-r1171, -x map-hifi) for long reads.
+* [Samtools](https://github.com/samtools/samtools) (version 1.3.1) for sorting alignment files.
 ## Binning (co-assembly, single-sample, multi-sample)
 ### [MetaBAT 2](https://bitbucket.org/berkeleylab/metabat/src/master/) (version 2.15)
 ```
