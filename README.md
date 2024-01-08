@@ -3,7 +3,6 @@
 ### MetaBAT 2
 ```
 ############################## Co-assembly binning ##############################
-
 mkdir marine_result
 cd marine_result
 jgi_summarize_bam_contig_depths --outputDepth depth_marine.txt *_co_assembly.sorted.bam
@@ -14,7 +13,7 @@ metabat2 -t 16 -i marine_co_assembly/final.contigs_1000.fa -a depth_marine.txt -
 
 mkdir ${file}_single_result
 cd ${file}_single_result
-jgi_summarize_bam_contig_depths --outputDepth depth_${file}_marine.txt ${file}_single.sorted.bam
+jgi_summarize_bam_contig_depths --outputDepth depth_${file}_marine.txt ${file}/${file}_single.sorted.bam
 mkdir bins_dir
 metabat2 -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -a depth_${file}_marine.txt -o bins_dir/bin
 
@@ -22,14 +21,13 @@ metabat2 -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -a depth_${f
 
 mkdir ${file}_multi_result
 cd ${file}_multi_result
-jgi_summarize_bam_contig_depths --outputDepth depth_${file}_marine.txt multi_map/*.sorted.bam
+jgi_summarize_bam_contig_depths --outputDepth depth_${file}_marine.txt ${file}/single_assembly_out/multi_map/*.sorted.bam
 mkdir bins_dir
 metabat2 -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -a depth_${file}_marine.txt -o bins_dir/bin
 ```
 ### MaxBin 2
 ```
 ############################## Co-assembly binning ##############################
-
 mkdir marine_result
 run_MaxBin.pl -contig marine_short_co_assembly/final.contigs_1000.fa -abund_list depth_list.txt -out marine_result/myout -thread 16
 
@@ -79,3 +77,159 @@ merge_cutup_clustering.py concoct_output/clustering_gt1000.csv > concoct_output/
 mkdir concoct_output/fasta_bins
 extract_fasta_bins.py ${file}/single_assembly_out/final.contigs_1000.fa concoct_output/clustering_merged.csv --output_path concoct_output/fasta_bins
 ```
+### VAMB
+```
+############################## Co-assembly binning ##############################
+out_file=marine_result
+fasta_file=marine_short_co_assembly/final.contigs_1000.fa
+depth_file=metabat2.15/marine_result/depth_marine.txt
+vamb --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000
+
+############################## Single-sample binning for each sample ##############################
+
+out_file=${file}_single_result
+fasta_file=${file}/single_assembly_out/final.contigs_1000.fa
+depth_file=metabat2.15/${file}_single_result/depth_${file}_marine.txt
+vamb --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000
+
+############################## Multi-sample binning for each sample ##############################
+
+out_file=${file}_multi_result
+fasta_file=${file}/single_assembly_out/final.contigs_1000.fa
+depth_file=metabat2.15/${file}_multi_result/depth_${file}_marine.txt
+vamb --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000 
+```
+### CLMB
+```
+############################## Co-assembly binning ##############################
+out_file=marine_result
+fasta_file=marine_short_co_assembly/final.contigs_1000.fa
+depth_file=metabat2.15/marine_result/depth_marine.txt
+vamb --contrastive --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file}  --minfasta 200000 -m 2000
+
+############################## Single-sample binning for each sample ##############################
+
+out_file=${file}_single_result
+fasta_file=${file}/single_assembly_out/final.contigs_1000.fa
+depth_file=metabat2.15/${file}_single_result/depth_${file}_marine.txt
+vamb --contrastive --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000
+
+############################## Multi-sample binning for each sample ##############################
+
+out_file=${file}_multi_result
+fasta_file=${file}/single_assembly_out/final.contigs_1000.fa
+depth_file=metabat2.15/${file}_multi_result/depth_${file}_marine.txt
+vamb --contrastive --outdir ./${out_file} --fasta ${fasta_file} --jgi ${depth_file} --minfasta 200000 -m 2000 
+```
+### MetaDecoder
+```
+############################## Co-assembly binning ##############################
+mkdir marine_result
+cd marine_result
+metadecoder coverage --threads 16 -s *_co_assembly.sam -o METADECODER_gsa.COVERAGE
+metadecoder seed --threads 16 -f marine_short_co_assembly/final.contigs_1000.fa -o METADECODER_gsa.SEED
+metadecoder cluster -f marine_short_co_assembly/final.contigs_1000.fa -c METADECODER_gsa.COVERAGE -s METADECODER_gsa.SEED -o METADECODER_marine
+
+############################## Single-sample binning for each sample ##############################
+
+mkdir ${file}_single_result
+cd ${file}_single_result
+metadecoder coverage --threads 16 -s ${file}/${file}_single.sam  -o METADECODER_gsa.COVERAGE
+metadecoder seed --threads 16 -f ${file}/single_assembly_out/final.contigs_1000.fa -o METADECODER_gsa.SEED
+metadecoder cluster -f ${file}/single_assembly_out/final.contigs_1000.fa -c METADECODER_gsa.COVERAGE -s METADECODER_gsa.SEED -o METADECODER_${file}_marine
+
+############################## Multi-sample binning for each sample ##############################
+
+mkdir ${file}_multi_result
+cd ${file}_multi_result
+metadecoder coverage --threads 16 -s ${file}/single_assembly_out/multi_map/*.sam  -o METADECODER_gsa.COVERAGE
+metadecoder seed --threads 16 -f ${file}/single_assembly_out/final.contigs_1000.fa -o METADECODER_gsa.SEED
+metadecoder cluster -f ${file}/single_assembly_out/final.contigs_1000.fa -c METADECODER_gsa.COVERAGE -s METADECODER_gsa.SEED -o METADECODER_${file}_marine
+```
+### Binny
+```
+############################## Co-assembly binning ##############################
+run_name_list=marine_result
+yaml_list=config_marine.yaml
+binny -l -n ${run_name_list[SLURM_ARRAY_TASK_ID]} -r -t 16 ${yaml_list}
+
+############################## Single-sample binning for each sample ##############################
+
+run_name_list=${file}_single_result
+yaml_list=config_${file}_single.yaml
+binny -l -n ${run_name_list[SLURM_ARRAY_TASK_ID]} -r -t 16 ${yaml_list}
+
+############################## Multi-sample binning for each sample ##############################
+
+run_name_list=${file}_multi_result
+yaml_list=config_${file}_multi.yaml
+binny -l -n ${run_name_list[SLURM_ARRAY_TASK_ID]} -r -t 16 ${yaml_list}
+```
+### MetaBinner
+```
+############################## Co-assembly binning ##############################
+mkdir path/marine_result
+cd xx/MetaBinner/scripts
+metabinner_path=xx/MetaBinner
+python gen_kmer.py marine_short_co_assembly/final.contigs_1000.fa 1000 4 path/marine_result/marine_kmer.tsv
+contig_file=marine_short_co_assembly/final.contigs_1000.fa
+output_dir=path/marine_result/output
+coverage_profiles=path/marine_coverage_profile.tsv
+kmer_profile=path/marine_result/marine_kmer.tsv
+../run_metabinner.sh -t 16 -a ${contig_file} -o ${output_dir} -d ${coverage_profiles} -k ${kmer_profile} -p ${metabinner_path}
+
+############################## Single-sample binning for each sample ##############################
+
+mkdir path/${file}_single_result
+cd xx/MetaBinner/scripts
+metabinner_path=xx/MetaBinner
+python gen_kmer.py ${file}/single_assembly_out/final.contigs_1000.fa 1000 4 path/${file}_single_result/${file}_marine_kmer.tsv
+contig_file=${file}/single_assembly_out/final.contigs_1000.fa
+output_dir=path/${file}_single_result/output
+coverage_profiles=path/depth_files/${file}_depth_single.txt
+kmer_profile=path/${file}_single_result/${file}_marine_kmer.tsv
+../run_metabinner.sh -t 16 -a ${contig_file} -o ${output_dir} -d ${coverage_profiles} -k ${kmer_profile} -p ${metabinner_path}
+
+############################## Multi-sample binning for each sample ##############################
+
+mkdir path/${file}_multi_result
+cd xx/MetaBinner/scripts
+metabinner_path=xx/MetaBinner
+python gen_kmer.py ${file}/single_assembly_out/final.contigs_1000.fa 1000 4 path/${file}_multi_result/${file}_marine_kmer.tsv
+contig_file=${file}/single_assembly_out/final.contigs_1000.fa
+output_dir=path/${file}_multi_result/output
+coverage_profiles=path/depth_files/${file}_depth_multi.txt
+kmer_profile=path/${file}_multi_result/${file}_marine_kmer.tsv
+../run_metabinner.sh -t 16 -a ${contig_file} -o ${output_dir} -d ${coverage_profiles} -k ${kmer_profile} -p ${metabinner_path}
+```
+### SemiBin 2
+```
+############################## Co-assembly binning ##############################
+mkdir marine_result
+cd marine_result
+SemiBin2 single_easy_bin -t 16 -i marine_short_co_assembly/final.contigs_1000.fa -b *_co_assembly.sorted.bam -o marine_result/output --compression none
+
+############################## Single-sample binning for each sample ##############################
+
+mkdir ${file}_single_result
+cd ${file}_single_result
+SemiBin2 single_easy_bin -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -b ${file}/${file}_single.sorted.bam -o marine_${file}/output --compression none
+
+############################## Multi-sample binning for each sample ##############################
+
+mkdir ${file}_multi_result
+cd ${file}_multi_result
+SemiBin2 single_easy_bin -t 16 -i ${file}/single_assembly_out/final.contigs_1000.fa -b ${file}/single_assembly_out/multi_map/*.sorted.bam -o marine_${file}/output --compression none
+```
+### COMEBin
+```
+############################## Co-assembly binning ##############################
+run_comebin.sh -t 16 -a marine_short_co_assembly/final.contigs_1000.fa -o path/Comebin_result -p path/Comebin_result/bam_files
+
+############################## Single-sample binning for each sample ##############################
+
+run_comebin.sh -t 16 -a ${file}/single_assembly_out/final.contigs_1000.fa -o path/Comebin_result/${file}_single_result -p path/Comebin_result/${file}_single_result/bam_files
+
+############################## Multi-sample binning for each sample ##############################
+
+run_comebin.sh -t 16 -a ${file}/single_assembly_out/final.contigs_1000.fa -o path/Comebin_result/${file}_multi_result -p path/Comebin_result/${file}_multi_result/bam_files
