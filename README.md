@@ -1,5 +1,12 @@
 # Binning-review
-## Binning
+## Assembly
+* [Megahit](https://github.com/voutcn/megahit) (version 1.2.9) for short reads.
+* [Flye](https://github.com/fenderglass/Flye) (version 2.9.2, --meta) for long reads.
+* [metaSPAdes](https://github.com/CSB5/OPERA-MS) (version 0.9.0, --no-polishing) for hybrid data.
+## Mapping
+* [Bowtie2](https://github.com/BenLangmead/bowtie2) (version 2.5.1) for short reads.
+* [minimap2](https://github.com/lh3/minimap2) (version 2.24-r1171, -x map-hifi) for long reads.
+## Binning (co-assembly, single-sample, multi-sample)
 ### [MetaBAT 2](https://bitbucket.org/berkeleylab/metabat/src/master/) (version 2.15)
 ```
 ############################## Co-assembly binning ##############################
@@ -233,3 +240,15 @@ run_comebin.sh -t 16 -a ${file}/single_assembly_out/final.contigs_1000.fa -o pat
 ############################## Multi-sample binning for each sample ##############################
 
 run_comebin.sh -t 16 -a ${file}/single_assembly_out/final.contigs_1000.fa -o path/Comebin_result/${file}_multi_result -p path/Comebin_result/${file}_multi_result/bam_files
+```
+## Refinement
+* [DAS Tool](https://github.com/cmks/DAS_Tool) (version 1.1.6).
+* [MetaWRAP](https://github.com/bxlab/metaWRAP) (version 1.3.2).
+* [MAGScoT](https://github.com/ikmb/MAGScoT) (version 1.0.0).
+## Evaluation and annotation
+* [CheckM 2](https://github.com/chklovski/CheckM2) (version 1.0.2) for assessing the completeness and contamination of metagenome-assembled genomes.
+* [Aragorn](http://www.ansikte.se/ARAGORN/) (version 1.2.41) for identifing tRNAs.
+* [Barrnap](https://github.com/tseemann/barrnap) (version 0.9) for predicting the location of 5S, 16S, and 23S rRNA genes.
+* [dRep](https://github.com/MrOlm/drep) (version 3.4.3) for dereplicating.
+* [RGI](https://github.com/arpcard/rgi) (version 6.0.2) for identifing ARGs.
+* [antiSMASH](https://github.com/antismash/antismash) (version 6.1.1) for identifing BGCs.
