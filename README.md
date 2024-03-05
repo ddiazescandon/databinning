@@ -1,4 +1,4 @@
-# Binning-review
+# Binning-benchmark
 ## Assembly
 * [Megahit](https://github.com/voutcn/megahit) (version 1.2.9) for short reads.
 * [Flye](https://github.com/fenderglass/Flye) (version 2.9.2, --meta) for long reads.
