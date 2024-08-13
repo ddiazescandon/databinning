@@ -1,3 +1,29 @@
+# Databinning software
+Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2, MetaDecoder), two high-performance binners (MetaBinner, COMEBin), and a fast bin-refinement tool MAGScoT.
+## Installation
+```
+conda install mamba
+conda create -n databinning
+conda activate databinning
+mamba install -c conda-forge -c bioconda -c r -c pytorch -c nvidia r-base r-optparse r-dplyr r-readr r-funr hmmer prodigal parallel comebin metabat2 pytorch pytorch-cuda=11.8
+pip3 install -U https://github.com/liu-congcong/MetaDecoder/releases/download/v1.0.19/metadecoder-1.0.19-py3-none-any.whl
+git clone https://github.com/htaohan/databinning.git
+cp -r databinning/databinning/* $CONDA_PREFIX/bin
+chmod -R 777 $CONDA_PREFIX/bin
+```
+##Usage example
+```
+#run metabat2
+databinning.sh -m metabat2 -t 16 -a assembly.fasta -b "*.sorted.bam" -o metabat_result
+#run metadecoder
+databinning.sh -m metadecoder -t 16 -a assembly.fasta -s "*.sam" -o metadecoder_result
+#run MetaBinner
+databinning.sh -m metabinner -t 16 -a assembly.fasta -f metabat_result/depth.txt -o metabinner_result
+#run COMEBin
+databinning.sh -m comebin -t 16 -a assembly.fasta -p bamfiles_path -o comebin_result
+#run MAGScot for bin-refinement
+databinning.sh -m magscot -t 16 -a assembly.fasta -x metabat_result/bins_dir -y bins_dir2 metadecoder_result/bins -z bins_dir3 comebin_result/comebin_res/comebin_res_bins -o refined_bins
+```
 # Binning-benchmark
 ## Assembly
 * [Megahit](https://github.com/voutcn/megahit) (version 1.2.9) for short reads.
