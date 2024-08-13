@@ -1,6 +1,6 @@
 # Databinning software
 Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2, MetaDecoder), two high-performance binners (MetaBinner, COMEBin), and a fast bin-refinement tool MAGScoT.
-## Installation
+## Installation 
 ```
 conda install mamba
 conda create -n databinning
@@ -11,7 +11,7 @@ git clone https://github.com/htaohan/databinning.git
 cp -r databinning/databinning/* $CONDA_PREFIX/bin
 chmod -R 777 $CONDA_PREFIX/bin
 ```
-##Usage example
+## Usage example
 ```
 #run metabat2
 databinning.sh -m metabat2 -t 16 -a assembly.fasta -b "*.sorted.bam" -o metabat_result
