@@ -13,6 +13,8 @@ chmod -R 777 $CONDA_PREFIX/bin
 ```
 ## Usage example
 ```
+#Automatically run four binning algorithms and refine the recovered bins
+databinning.sh -m auto -t 16 -a assembly.fasta -b "*.sorted.bam" -s "*.sam" -o out_dir
 #run metabat2
 databinning.sh -m metabat2 -t 16 -a assembly.fasta -b "*.sorted.bam" -o metabat_result
 #run metadecoder
