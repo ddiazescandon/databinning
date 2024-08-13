@@ -22,7 +22,7 @@ databinning.sh -m metabinner -t 16 -a assembly.fasta -f metabat_result/depth.txt
 #run COMEBin
 databinning.sh -m comebin -t 16 -a assembly.fasta -p bamfiles_path -o comebin_result
 #run MAGScot for bin-refinement
-databinning.sh -m magscot -t 16 -a assembly.fasta -x metabat_result/bins_dir -y bins_dir2 metadecoder_result/bins -z bins_dir3 comebin_result/comebin_res/comebin_res_bins -o refined_bins
+databinning.sh -m magscot -t 16 -a assembly.fasta -x metabat_result/bins_dir -y metadecoder_result/bins -z comebin_result/comebin_res/comebin_res_bins -o refined_bins
 ```
 # Binning-benchmark
 ## Assembly
