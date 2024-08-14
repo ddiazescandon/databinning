@@ -19,15 +19,15 @@ chmod -R 777 $CONDA_PREFIX/bin
 ```
 #Automatically run four binning algorithms and refine the recovered bins
 databinning.sh -m auto -t 16 -a assembly.fasta -b "*.sorted.bam" -s "*.sam" -o out_dir
-#run metabat2
+#Only run MetaBAT2
 databinning.sh -m metabat2 -t 16 -a assembly.fasta -b "*.sorted.bam" -o metabat_result
-#run metadecoder
+#Only run MetaDecoder
 databinning.sh -m metadecoder -t 16 -a assembly.fasta -s "*.sam" -o metadecoder_result
-#run MetaBinner
+#Only run MetaBinner
 databinning.sh -m metabinner -t 16 -a assembly.fasta -f metabat_result/depth.txt -o metabinner_result
-#run COMEBin
+#Only run COMEBin
 databinning.sh -m comebin -t 16 -a assembly.fasta -p bamfiles_path -o comebin_result
-#run MAGScot for bin-refinement
+#Only run MAGScot for bin-refinement
 databinning.sh -m magscot -t 16 -a assembly.fasta -x metabat_result/bins_dir -y metadecoder_result/bins -z comebin_result/comebin_res/comebin_res_bins -o refined_bins
 ```
 ## Help message
