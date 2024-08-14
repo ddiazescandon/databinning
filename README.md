@@ -2,7 +2,10 @@
 Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2, MetaDecoder), two high-performance binners (MetaBinner, COMEBin), and a fast bin-refinement tool MAGScoT.
 ## Installation 
 ```
-conda install mamba
+##The Anaconda version we used is provided. If you encounter difficulties with the download, you may try using this version of Anaconda.
+https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.04-Linux-x86_64.sh
+####Installation####### 
+conda install -n base conda-forge::mamba
 conda create -n databinning
 conda activate databinning
 mamba install -c conda-forge -c bioconda -c r -c pytorch -c nvidia r-base r-optparse r-dplyr r-readr r-funr hmmer prodigal parallel comebin metabat2 pytorch pytorch-cuda=11.8
