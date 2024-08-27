@@ -302,7 +302,9 @@ run_comebin.sh -t 16 -a ${file}/single_assembly_out/final.contigs_1000.fa -o pat
 * [dRep](https://github.com/MrOlm/drep) (version 3.4.3) for dereplicating.
 * [RGI](https://github.com/arpcard/rgi) (version 6.0.2) for identifing ARGs.
 * [antiSMASH](https://github.com/antismash/antismash) (version 6.1.1) for identifing BGCs.
-# References
+## Contacts and bug reports
+Please feel free to send bug reports or questions to Haitao Han: 22110850021@m.fudan.edu.cn; and Prof. Shanfeng Zhu: zhusf@fudan.edu.cn
+## References
 [1] Kang, D.D., Li, F., Kirton, E., Thomas, A., Egan, R., An, H., Wang, Z.: MetaBAT 2: an adaptive binning algorithm for robust and efficient genome reconstruction from metagenome assemblies. PeerJ 7, 7359 (2019)
 
 [2] Liu, C.-C., Dong, S.-S., Chen, J.-B., Wang, C., Ning, P., Guo, Y., Yang, T.-L.: Metadecoder: a novel method for clustering metagenomic contigs. Microbiome 10(1), 1–16 (2022)
