@@ -47,7 +47,7 @@ Options:
   -y STR          Path to the bins that need to be refined
   -z STR          Path to the bins that need to be refined
 ```
-# Binning-benchmark
+# Benchmark pipeline
 ## Assembly
 * [Megahit](https://github.com/voutcn/megahit) (version 1.2.9) for short reads.
 * [Flye](https://github.com/fenderglass/Flye) (version 2.9.2, --meta) for long reads.
