@@ -1,5 +1,5 @@
 # Databinning software
-Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2 [1], MetaDecoder [2]), two high-performance binners (MetaBinner [3], COMEBin [[4]](https://github.com/ziyewang/COMEBin)), and a fast bin-refinement tool MAGScoT.
+Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2 [[1]](https://bitbucket.org/berkeleylab/metabat/src/master/), MetaDecoder [[2]](https://github.com/liu-congcong/MetaDecoder)), two high-performance binners (MetaBinner [[3]](https://github.com/ziyewang/MetaBinner), COMEBin [[4]](https://github.com/ziyewang/COMEBin)), and a fast bin-refinement tool MAGScoT.
 ## Installation 
 ```
 ##The Anaconda version we used is provided. If you encounter difficulties with the download, you may try using this version of Anaconda.
