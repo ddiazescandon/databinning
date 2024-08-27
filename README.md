@@ -1,5 +1,5 @@
 # Databinning software
-Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2, MetaDecoder), two high-performance binners (MetaBinner, COMEBin), and a fast bin-refinement tool MAGScoT.
+Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2 [1], MetaDecoder [2]), two high-performance binners (MetaBinner [3], COMEBin *[[4]] (https://github.com/ziyewang/COMEBin)), and a fast bin-refinement tool MAGScoT.
 ## Installation 
 ```
 ##The Anaconda version we used is provided. If you encounter difficulties with the download, you may try using this version of Anaconda.
@@ -302,3 +302,8 @@ run_comebin.sh -t 16 -a ${file}/single_assembly_out/final.contigs_1000.fa -o pat
 * [dRep](https://github.com/MrOlm/drep) (version 3.4.3) for dereplicating.
 * [RGI](https://github.com/arpcard/rgi) (version 6.0.2) for identifing ARGs.
 * [antiSMASH](https://github.com/antismash/antismash) (version 6.1.1) for identifing BGCs.
+# References
+[1] Kang, D.D., Li, F., Kirton, E., Thomas, A., Egan, R., An, H., Wang, Z.: MetaBAT 2: an adaptive binning algorithm for robust and efficient genome reconstruction from metagenome assemblies. PeerJ 7, 7359 (2019)
+[2] Liu, C.-C., Dong, S.-S., Chen, J.-B., Wang, C., Ning, P., Guo, Y., Yang, T.-L.: Metadecoder: a novel method for clustering metagenomic contigs. Microbiome 10(1), 1–16 (2022)
+[3] Wang, Z., Huang, P., You, R., Sun, F., Zhu, S.: MetaBinner: a high-performance and stand-alone ensemble binning method to recover individual genomes from complex microbial communities. Genome Biology 24(1), 1 (2023)
+[4] Wang, Z., You, R., Han, H., Liu, W., Sun, F., Zhu, S.: Effective binning of metagenomic contigs using contrastive multi-view representation learning. Nature Communications 15(1), 585 (2024)
