@@ -1,3 +1,4 @@
+### https://github.com/ikmb/MAGScoT
 ### MAGScoT - Bin Scoring and Refinment Tool for Metagenome Assblies
 
 library("optparse")
