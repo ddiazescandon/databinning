@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 ##############################################################################################################################################################
+# https://github.com/ziyewang/MetaBinner
 # This script is meant to be run MetaBinner after obtaining the coverage file and the kmer profile.
 # Author of pipeline: Ziye Wang.
 # For questions, bugs, and suggestions, contact me at zwang17@fudan.edu.cn
