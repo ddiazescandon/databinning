@@ -312,3 +312,5 @@ Please feel free to send bug reports or questions to Haitao Han: 22110850021@m.f
 [3] Wang, Z., Huang, P., You, R., Sun, F., Zhu, S.: MetaBinner: a high-performance and stand-alone ensemble binning method to recover individual genomes from complex microbial communities. Genome Biology 24(1), 1 (2023)
 
 [4] Wang, Z., You, R., Han, H., Liu, W., Sun, F., Zhu, S.: Effective binning of metagenomic contigs using contrastive multi-view representation learning. Nature Communications 15(1), 585 (2024)
+## Citation
+Han, H., Wang, Z. & Zhu, S. Benchmarking metagenomic binning tools on real datasets across sequencing platforms and binning modes. Nat Commun 16, 2865 (2025). https://doi.org/10.1038/s41467-025-57957-6
