@@ -1,3 +1,9 @@
+# Benchmarking metagenomic binning tools on real datasets across sequencing platforms and binning modes
+In this study, we introduced seven data-binning combinations by integrating short-read, long-read, and hybrid data with co-assembly, single-sample, and multi-sample binning, respectively.
+The benchmark results demonstrate that multi-sample binning exhibits optimal performance across short-read, long-read, and hybrid data. 
+Moreover, multi-sample binning outperforms other binning modes in identifying potential antibiotic resistance gene hosts and near-complete strains containing potential biosynthetic gene clusters across diverse data types.
+![image](https://github.com/user-attachments/assets/92c9df1b-32f2-4ddf-abed-af6531fe20a2)
+
 # Databinning software
 Databinng is a user-friendly metagenomic binning wrapper suite that comprises two efficient binners (MetaBAT 2 [[1]](https://bitbucket.org/berkeleylab/metabat/src/master/), MetaDecoder [[2]](https://github.com/liu-congcong/MetaDecoder)), two high-performance binners (MetaBinner [[3]](https://github.com/ziyewang/MetaBinner), COMEBin [[4]](https://github.com/ziyewang/COMEBin)), and a fast bin-refinement tool MAGScoT.
 ## Installation 
