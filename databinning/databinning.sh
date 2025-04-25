@@ -73,6 +73,18 @@ case ${binner} in
         mkdir bins_dir
         metabat2 -t ${threads} -i ${contig_file} -a depth.txt -o bins_dir/bin
         ;;
+    concoct)
+#        if [ -z "${contig_file}" ] || [ -z "${output_dir}" ]; then
+#            echo "Error: For mode 'metabat', both -a <file> and -b <dir> are required."
+#            help_message
+        echo "Executing Concoct with threads ${threads} contigfile ${contig_file} -bamfile ${bam_files}"
+        mkdir -p ${output_dir}
+        cd ${output_dir}
+        mkdir -p bins_dir
+        cut_up_fasta.py ${contig_file} -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa
+        concoct_coverage_table.py contigs_10K.bed ${bam_files} > coverage_table.tsv
+        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv --threads ${threads} -o bins_dir/bin
+        ;;
     comebin)
 #        if [ -z "${contig_file}" ] || [ -z "${output_dir}" ]; then
 #            echo "Error: For mode 'metabat', both -a <file> and -b <dir> are required."
@@ -159,6 +171,15 @@ case ${binner} in
         mkdir bins_dir
         metabat2 -t ${threads} -i ${contig_file} -a depth.txt -o bins_dir/bin
 
+        ## run concoct
+        echo "Executing Concoct with threads ${threads} contigfile ${contig_file} -bamfile ${bam_files}"
+        mkdir -p ${output_dir}
+        cd ${output_dir}
+        mkdir -p bins_dir
+        cut_up_fasta.py ${contig_file} -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa
+        concoct_coverage_table.py contigs_10K.bed ${bam_files} > coverage_table.tsv
+        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv --threads ${threads} -o bins_dir/bin
+        
         ##run metadecoder
         echo "Executing MetaDecoder with threads ${threads} contigfile ${contig_file} samfile ${sam_files}"
         mkdir -p ${output_dir}/metadecoder_result/bins_dir
@@ -207,14 +228,17 @@ case ${binner} in
         cat example.pfam example.tigr > example.hmm
 
         Contigs_to_bin_tsv.py --path ${output_dir}/metabat2_result/bins_dir -o ${output_dir}/metabat2_result/contig_to_bins.tsv
+        Contigs_to_bin_tsv.py --path ${output_dir}/concoct_result/bins_dir -o ${output_dir}/concoct_result/contig_to_bins.tsv
         Contigs_to_bin_tsv.py --path ${output_dir}/metabinner_result/bins_dir -o ${output_dir}/metabinner_result/contig_to_bins.tsv
         Contigs_to_bin_tsv.py --path ${output_dir}/comebin_result/bins_dir -o ${output_dir}/comebin_result/contig_to_bins.tsv
         Contigs_to_bin_tsv.py --path ${output_dir}/metadecoder_result/bins_dir -o ${output_dir}/metadecoder_result/contig_to_bins.tsv
         chmod -R 777 ${output_dir}/metabat2_result/contig_to_bins.tsv
+        chmod -R 777 ${output_dir}/concoct_result/contig_to_bins.tsv
         chmod -R 777 ${output_dir}/metabinner_result/contig_to_bins.tsv
         chmod -R 777 ${output_dir}/comebin_result/contig_to_bins.tsv
         chmod -R 777 ${output_dir}/metadecoder_result/contig_to_bins.tsv
 
+        awk '{print $2"\t"$1"\tconcoct"}'  ${output_dir}/concoct_result/contig_to_bins.tsv >> example.contigs_to_bin.tsv
         awk '{print $2"\t"$1"\tmetabat2"}'  ${output_dir}/metabat2_result/contig_to_bins.tsv > example.contigs_to_bin.tsv
         awk '{print $2"\t"$1"\tmetabinner"}'  ${output_dir}/metabinner_result/contig_to_bins.tsv >> example.contigs_to_bin.tsv
         awk '{print $2"\t"$1"\tcomebin"}'  ${output_dir}/comebin_result/contig_to_bins.tsv >> example.contigs_to_bin.tsv
