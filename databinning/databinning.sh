@@ -67,23 +67,21 @@ case ${binner} in
 #            help_message
 #        fi
         echo "Executing MetaBat 2 with threads ${threads} contigfile ${contig_file} -bamfile ${bam_files}"
-        mkdir -p ${output_dir}
+        mkdir -p ${output_dir}/bins_dir
         cd ${output_dir}
         jgi_summarize_bam_contig_depths --outputDepth depth.txt ${bam_files}
-        mkdir bins_dir
-        metabat2 -t ${threads} -i ${contig_file} -a depth.txt -o bins_dir/bin
+        metabat2 -t ${threads} -i ${contig_file} -a depth.txt -o ${output_dir}/bins_dir/metabat2
         ;;
     concoct)
 #        if [ -z "${contig_file}" ] || [ -z "${output_dir}" ]; then
 #            echo "Error: For mode 'metabat', both -a <file> and -b <dir> are required."
 #            help_message
         echo "Executing Concoct with threads ${threads} contigfile ${contig_file} -bamfile ${bam_files}"
-        mkdir -p ${output_dir}
+        mkdir -p ${output_dir}/bins_dir
         cd ${output_dir}
-        mkdir -p bins_dir
         cut_up_fasta.py ${contig_file} -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa
         concoct_coverage_table.py contigs_10K.bed ${bam_files} > coverage_table.tsv
-        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv --threads ${threads} -o bins_dir/bin
+        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv --threads ${threads} -o bins_dir/concoct
         ;;
     comebin)
 #        if [ -z "${contig_file}" ] || [ -z "${output_dir}" ]; then
@@ -165,20 +163,20 @@ case ${binner} in
     auto)
         ## run metabat 2
         echo "Executing MetaBat 2 with threads ${threads} contigfile ${contig_file} -bamfile ${bam_files}"
-        mkdir -p ${output_dir}/metabat2_result
+        mkdir -p ${output_dir}/metabat2_resul/bins_dir 
         cd ${output_dir}/metabat2_result
         jgi_summarize_bam_contig_depths --outputDepth depth.txt ${bam_files}
         mkdir bins_dir
-        metabat2 -t ${threads} -i ${contig_file} -a depth.txt -o bins_dir/bin
+        metabat2 -t ${threads} -i ${contig_file} -a depth.txt -o ${output_dir}/metabat2_resul/bins_dir 
 
         ## run concoct
         echo "Executing Concoct with threads ${threads} contigfile ${contig_file} -bamfile ${bam_files}"
-        mkdir -p ${output_dir}
-        cd ${output_dir}
+        mkdir -p ${output_dir}/concoct_result/bins_dir
+        cd ${output_dir}/concoct_result
         mkdir -p bins_dir
         cut_up_fasta.py ${contig_file} -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa
         concoct_coverage_table.py contigs_10K.bed ${bam_files} > coverage_table.tsv
-        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv --threads ${threads} -o bins_dir/bin
+        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv --threads ${threads} -o ${output_dir}/concoct_result/bins_dir
         
         ##run metadecoder
         echo "Executing MetaDecoder with threads ${threads} contigfile ${contig_file} samfile ${sam_files}"
@@ -186,11 +184,11 @@ case ${binner} in
         cd ${output_dir}/metadecoder_result
         metadecoder coverage --threads ${threads} -s ${sam_files}  -o METADECODER_gsa.COVERAGE
         metadecoder seed --threads ${threads} -f ${contig_file} -o METADECODER_gsa.SEED
-        metadecoder cluster -f ${contig_file} -c METADECODER_gsa.COVERAGE -s METADECODER_gsa.SEED -o bins_dir/METADECODER
+        metadecoder cluster -f ${contig_file} -c METADECODER_gsa.COVERAGE -s METADECODER_gsa.SEED -o ${output_dir}/metadecoder_result/bins_dir
 
         ##run metabinner
         echo "Executing MetaBinner with threads ${threads} contigfile ${contig_file} depthfile ${depth_file}"
-        mkdir -p ${output_dir}/metabinner_result
+        mkdir -p ${output_dir}/metabinner_result/bins_dir
         awk -F'\t' '{OFS="\t"; output=""; for(i=1; i<=NF; i++) if (i == 1 || (i >= 4 && (i-4) % 2 == 0)) { if (output != "") output = output OFS; output = output $i } print output}' ${output_dir}/metabat2_result/depth.txt > ${output_dir}/metabinner_result/coverage_profile.tsv
         cd $CONDA_PREFIX/bin/MetaBinner/scripts
         metabinner_path=$CONDA_PREFIX/bin/MetaBinner
@@ -198,16 +196,16 @@ case ${binner} in
 
         ../run_metabinner.sh -t ${threads} -a ${contig_file} -o ${output_dir}/metabinner_result -d ${output_dir}/metabinner_result/coverage_profile.tsv -k ${output_dir}/metabinner_result/kmer.tsv -p ${metabinner_path}
         cp -r ${output_dir}/metabinner_result/metabinner_res/ensemble_res/greedy_cont_weight_3_mincomp_50.0_maxcont_15.0_bins/ensemble_3logtrans/addrefined2and3comps/greedy_cont_weight_3_mincomp_50.0_maxcont_15.0_bins ${output_dir}/metabinner_result/bins_dir
-        #run comebin
+        ## run comebin
         echo "Executing COMEBin with threads ${threads} contigfile ${contig_file} bamfilepath ${bam_file_path}"
-        mkdir -p ${output_dir}/comebin_result
+        mkdir -p ${output_dir}/comebin_result/bins_dir
         cd ${output_dir}/comebin_result
         mkdir bamfiles_tmp
         cp ${bam_files} bamfiles_tmp
         run_comebin.sh -t ${threads} -a ${contig_file} -o ${output_dir}/comebin_result -p bamfiles_tmp
         cp -r ${output_dir}/comebin_result/comebin_res/comebin_res_bins ${output_dir}/comebin_result/bins_dir
         rm -r bamfiles_tmp
-        #refinement
+        ## refinement
         echo "Executing MAGScoT with threads ${threads} contigfile ${contig_file} "
         MAGScoT_folder=${CONDA_PREFIX}/bin/MAGScoT
 
@@ -232,6 +230,7 @@ case ${binner} in
         Contigs_to_bin_tsv.py --path ${output_dir}/metabinner_result/bins_dir -o ${output_dir}/metabinner_result/contig_to_bins.tsv
         Contigs_to_bin_tsv.py --path ${output_dir}/comebin_result/bins_dir -o ${output_dir}/comebin_result/contig_to_bins.tsv
         Contigs_to_bin_tsv.py --path ${output_dir}/metadecoder_result/bins_dir -o ${output_dir}/metadecoder_result/contig_to_bins.tsv
+
         chmod -R 777 ${output_dir}/metabat2_result/contig_to_bins.tsv
         chmod -R 777 ${output_dir}/concoct_result/contig_to_bins.tsv
         chmod -R 777 ${output_dir}/metabinner_result/contig_to_bins.tsv
